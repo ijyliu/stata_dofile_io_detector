@@ -1,0 +1,476 @@
+* Human corrected automatically generated I-O mappings
+* Generated using Automated Dofile IO Mapper 1.0
+* code by Isaac Liu with help from M Z on Stack Overflow
+
+* 9_analyze_rate_bins.do
+* Inputs:
+* "T:\vavra\crism\crism_monthly_fullsample\output\ratebins_msa_by_month\ratebins_national_month`j'.dta"
+* "~/Dropbox/Coupon Distribution and Macro Outcomes/vavra/inputs/ratebins_national_month`j'.dta"
+* Outputs:
+* "results/figures/hazards_by_type_crism"
+* Intermediates:
+
+* analysis_national.do
+* Inputs:
+* "inputs/CLTV_national_month`j'.dta"
+* "inputs/ratebins_national_month`j'.dta"
+* "inputs/corelogic_national.dta"
+* "inputs/cpi.dta"
+* "inputs/mp_shocks_data.dta"
+* "inputs/national_refi_panel.dta"
+* "~\Dropbox\Coupon Distribution and Macro Outcomes\empirical\Stata\output\ts_fr_by_loan_purpose_v2.dta"
+* "inputs/averate_national.dta"
+* Outputs:
+* Intermediates:
+* "C:\Users\jvavra0\Dropbox\Coupon Distribution and Macro Outcomes\vavra\results\distandhazardinputs.dta"
+* "inputs/CLTV_national.dta"
+* "results/ave_distandhazard.dta"
+
+* analysis_national_clean.do
+* Inputs:
+* "inputs/CLTV_national_month`j'.dta"
+* "inputs/ratebins_national_month`j'.dta"
+* "inputs/corelogic_national.dta"
+* "inputs/cpi.dta"
+* "inputs/mp_shocks_data.dta"
+* "inputs/national_refi_panel.dta"
+* "~\Dropbox\Coupon Distribution and Macro Outcomes\empirical\Stata\output\ts_fr_by_loan_purpose_v2.dta"
+* "inputs/averate_national.dta"
+* Outputs:
+* "results/coupon_distribution_by_datem.csv"
+* "results/tables/prepaymenteffects_baseline.tex"
+* "results/tables/prepaymenteffects_bytype.tex"
+* "results/tables/fracpos_IV_mpshocks.tex"
+* "results/tables/rm_interactions_with_IM.tex"
+* "results/coupon_distribution_by_datem"
+* "results/figures/rate_time_series"
+* "results/figures/ave_distandhazard"
+* "results/figures/dist_2000vs2003"
+* "results/figures/freq_vs_fracpos"
+* "results/figures/freq_rate_refi"
+* "results/figures/freq_casho_refi"
+* "results/figures/freq_purch_refi"
+* "results/figures/shares_vs_actual_decomp"
+* "results/figures/predicted_averatefromstep_vs_actualaverate"
+* "results/figures/IMresponsivenessindex"
+* Intermediates:
+* "results/ave_distandhazard.dta"
+* "inputs/CLTV_national.dta"
+* "C:\Users\jvavra0\Dropbox\Coupon Distribution and Macro Outcomes\vavra\results\distandhazardinputs.dta"
+
+* analysis_national_clean_never_delinquent.do
+* Inputs:
+* "inputs/CLTV_national_month`j'_never_delinquent.dta"
+* "inputs/ratebins_national_month`j'_never_delinquent.dta"
+* "inputs/corelogic_national.dta"
+* "inputs/ARMshare.dta"
+* "inputs/cpi.dta"
+* "inputs/CLTV_national.dta"
+* "inputs/mp_shocks_data.dta"
+* "inputs/averate_national.dta"
+* Outputs:
+* "mortgage_rate.csv"
+* "results/coupon_distribution_by_datem_never_delinquent.csv"
+* "inputs/CLTV_national_only_gse.dta"
+* "results/distandhazardinputs_never_delinquent.dta"
+* "results/coupon_distribution_by_datem_never_delinquent"
+* "results/figures/rate_time_series"
+* Intermediates:
+* "results/ave_distandhazard_never_delinquent.dta"
+
+* analysis_national_clean_no_gse.do
+* Inputs:
+* "T:/vavra/mcdash_only/results/CLTV_national_month`j'_no_gse.dta"
+* "T:/vavra/mcdash_only/results/ratebins_national_month`j'_no_gse.dta"
+* "inputs/corelogic_national.dta"
+* "inputs/ARMshare.dta"
+* "inputs/cpi.dta"
+* "inputs/CLTV_national.dta"
+* "inputs/mp_shocks_data.dta"
+* "inputs/averate_national.dta"
+* Outputs:
+* "mortgage_rate.csv"
+* "results/coupon_distribution_by_datem_no_gse.csv"
+* "results/tables/prepaymenteffects_fracpos_LTV_noGSE.tex"
+* "inputs/CLTV_national_no_gse.dta"
+* "results/distandhazardinputs_no_gse.dta"
+* "results/coupon_distribution_by_datem_no_gse"
+* "results/figures/rate_time_series"
+* Intermediates:
+* "results/ave_distandhazard_no_gse.dta"
+
+* analysis_national_clean_only_gse.do
+* Inputs:
+* "inputs/CLTV_national_month`j'_only_gse.dta"
+* "inputs/ratebins_national_month`j'_only_gse.dta"
+* "inputs/corelogic_national.dta"
+* "inputs/ARMshare.dta"
+* "inputs/cpi.dta"
+* "inputs/CLTV_national.dta"
+* "inputs/mp_shocks_data.dta"
+* "inputs/averate_national.dta"
+* Outputs:
+* "mortgage_rate.csv"
+* "results/coupon_distribution_by_datem_only_gse.csv"
+* "inputs/CLTV_national_only_gse.dta"
+* "results/distandhazardinputs_only_gse.dta"
+* "results/coupon_distribution_by_datem_only_gse"
+* "results/figures/rate_time_series"
+* Intermediates:
+* "results/ave_distandhazard_only_gse.dta"
+
+* analysis_national_clean_with_slidetables (Konstantin Milbradt's conflicted copy 2020-01-18).do
+* Inputs:
+* "inputs/gap_dist_stats_national_month`j'.dta"
+* "inputs/CLTV_national_month`j'.dta"
+* "inputs/ratebins_level_national_month`j'.dta"
+* "inputs/ratebins_national_month`j'.dta"
+* "inputs/corelogic_national.dta"
+* "inputs/ARMshare.dta"
+* "inputs/cpi.dta"
+* "inputs/unrate.dta"
+* "inputs/indprod.dta"
+* "inputs/mp_shocks_data.dta"
+* "inputs/averate_national.dta"
+* "inputs/national_refi_panel.dta"
+* "~\Dropbox\Coupon Distribution and Macro Outcomes\empirical\Stata\output\ts_fr_by_loan_purpose_v2.dta"
+* "inputs/mba_refi_index_monthly"
+* "~\Dropbox\Coupon Distribution and Macro Outcomes\empirical\Stata\output\prepayment_ts_all_agg.dta"
+* "inputs/ratebins_national_month`j'_includeallfirstliens.dta"
+* "inputs/count_predictedr_month`j'.dta"
+* "inputs/ratebins_national_month`j'_heterogeneous_reset_r.dta"
+* Outputs:
+* "mortgage_rate.csv"
+* "gap_dist_stats_national.csv"
+* "results/coupon_level_distribution_by_datem.csv"
+* "gapdist_1992m1.csv"
+* "gapdist_1997m1.csv"
+* "gapdist_2002m1.csv"
+* "gapdist_2007m1.csv"
+* "gapdist_2012m1.csv"
+* "gapdist_2017m1.csv"
+* "results/coupon_distribution_by_datem.csv"
+* "freq.csv"
+* "results/tables/prepaymenteffects_different_thresholds.tex"
+* "results/tables/prepaymenteffects_fracpos_LTV.tex"
+* "results/tables/prepaymenteffects_controls.tex"
+* "results/tables/prepaymenteffects_controls_IV.tex"
+* "results/tables/prepaymenteffects_bytype_newey.tex"
+* "results/tables/prepaymenteffects_bytype_newey_short.tex"
+* "results/tables/prepaymenteffects_bytype_newey_leverage.tex"
+* "results/tables/fracpos_IV_mpshocks.tex"
+* "results/tables/fracpos_IV_mpshocks_newey.tex"
+* "results/tables/rm_interactions_with_IM.tex"
+* "results/tables/rm_interactions_with_IM_newey.tex"
+* "results/tables/prepaymenteffects_newey_wmiddleperiod_allfirstliens.tex"
+* "results/tables/prepaymenteffects_newey_wmiddleperiod_heterogeneous_reset_r.tex"
+* "inputs/gap_mean.dta"
+* "results/coupon_level_distribution_by_datem"
+* "results/coupon_distribution_by_datem"
+* "results/distandhazardinputs_allfirstliens.dta"
+* "results/distandhazardinputs_heterogeneous_reset_r.dta"
+* "results/figures/rate_time_series"
+* "results/figures/ave_distandhazard"
+* "results/figures/ave_distandhazard_v2"
+* "results/figures/dist_2000vs2003"
+* "results/figures/freq_vs_fracpos"
+* "results/figures/freq_vs_fracpos_option2"
+* "results/figures/freq_vs_fracpos_option3"
+* "results/figures/freq_vs_fracpos_option4"
+* "results/figures/freq_vs_fracpos_option5"
+* "results/figures/freq_vs_fracpos_option6"
+* "results/figures/freq_vs_fracpos_option7"
+* "results/figures/freq_vs_fracpos_option8"
+* "results/figures/freq_rate_refi"
+* "results/figures/freq_casho_refi"
+* "results/figures/freq_purch_refi"
+* "results/figures/shares_vs_actual_decomp"
+* "results/figures/refi_index_mcdash_vs_mba"
+* "results/figures/refi_index_corelogic_vs_mba"
+* "results/figures/predicted_averatefromstep_vs_actualaverate"
+* "results/figures/IMresponsivenessindex"
+* "results/figures/ave_distandhazard_allfirstliens"
+* "results/figures/freq_vs_fracpos_allfirstliens"
+* "results/figures/ave_distandhazard_heterogeneous_reset_r"
+* "results/figures/freq_vs_fracpos_heterogeneous_reset_r."
+* Intermediates:
+* "C:\Users\jvavra0\Dropbox\Coupon Distribution and Macro Outcomes\vavra\results\distandhazardinputs.dta"
+* "results/ave_distandhazard.dta"
+* "results/ave_distandhazard_allfirstliens.dta"
+* "inputs/CLTV_national.dta"
+* "results/ave_distandhazard_heterogeneous_reset_r.dta"
+
+* analysis_national_clean_with_slidetables.do
+* Inputs:
+* "inputs/gap_dist_stats_national_month`j'.dta"
+* "inputs/CLTV_national_month`j'.dta"
+* "inputs/ratebins_level_national_month`j'.dta"
+* "inputs/ratebins_national_month`j'.dta"
+* "inputs/corelogic_national.dta"
+* "inputs/ARMshare.dta"
+* "inputs/cpi.dta"
+* "inputs/unrate.dta"
+* "inputs/indprod.dta"
+* "inputs/mp_shocks_data.dta"
+* "inputs/averate_national.dta"
+* "inputs/national_refi_panel.dta"
+* "~\Dropbox\Coupon Distribution and Macro Outcomes\empirical\Stata\output\ts_fr_by_loan_purpose_v2.dta"
+* "inputs/mba_refi_index_monthly"
+* "~\Dropbox\Coupon Distribution and Macro Outcomes\empirical\Stata\output\prepayment_ts_all_agg.dta"
+* "inputs/ratebins_national_month`j'_includeallfirstliens.dta"
+* "inputs/count_predictedr_month`j'.dta"
+* "inputs/ratebins_national_month`j'_heterogeneous_reset_r.dta"
+* "inputs/ratebins_national_month`j'_only_gse.dta"
+* "inputs/ratebins_national_month`j'_never_delinquent.dta"
+* "inputs/ratebins_dollars_national_month`j'.dta"
+* "thresholds_dollars"
+* Outputs:
+* "mortgage_rate.csv"
+* "gap_dist_stats_national.csv"
+* "results/coupon_level_distribution_by_datem.csv"
+* "gapdist_1992m1.csv"
+* "gapdist_1997m1.csv"
+* "gapdist_2002m1.csv"
+* "gapdist_2007m1.csv"
+* "gapdist_2012m1.csv"
+* "gapdist_2017m1.csv"
+* "results/coupon_distribution_by_datem.csv"
+* "inputs/data_fracpos_freq.csv"
+* "freq.csv"
+* "results/tables/prepaymenteffects_different_thresholds)old.tex"
+* "results/tables/prepaymenteffects_fracpos_LTV.tex"
+* "results/tables/prepaymenteffects_controls.tex"
+* "results/tables/prepaymenteffects_controls_IV.tex"
+* "results/tables/tot_refi_different_thresholds.tex"
+* "results/tables/tot_refi_fracpos_LTV.tex"
+* "results/tables/tot_refi_controls.tex"
+* "results/tables/tot_refi_controls_IV.tex"
+* "results/tables/prepaymenteffects_bytype_newey.tex"
+* "results/tables/prepaymenteffects_bytype_newey_short.tex"
+* "results/tables/prepaymenteffects_bytype_newey_leverage.tex"
+* "results/tables/fracpos_IV_mpshocks.tex"
+* "results/tables/fracpos_IV_mpshocks_newey.tex"
+* "results/tables/rm_interactions_with_IM.tex"
+* "results/tables/rm_interactions_with_IM_newey.tex"
+* "results/tables/prepaymenteffects_fracpos_LTV_all_liens.tex"
+* "results/tables/prepaymenteffects_newey_wmiddleperiod_heterogeneous_reset_r.tex"
+* "results/coupon_distribution_by_datem_only_gse.csv"
+* "results/tables/prepaymenteffects_fracpos_LTV_onlyGSE.tex"
+* "results/coupon_distribution_by_datem_never_delinquent.csv"
+* "results/tables/prepaymenteffects_fracpos_LTV_never_delinquent.tex"
+* "results/tables/prepaymenteffects_different_thresholds.tex"
+* "inputs/gap_mean.dta"
+* "results/coupon_level_distribution_by_datem"
+* "results/coupon_distribution_by_datem"
+* "freq.dta"
+* "results/distandhazardinputs_allfirstliens.dta"
+* "results/distandhazardinputs_heterogeneous_reset_r.dta"
+* "results/distandhazardinputs_only_gse.dta"
+* "results/coupon_distribution_by_datem_only_gse"
+* "results/distandhazardinputs_never_delinquent.dta"
+* "results/coupon_distribution_by_datem_never_delinquent"
+* "results/distandhazardinputs_dollarbins.dta"
+* "thresholds_dollars.dta"
+* "results/figures/rate_time_series"
+* "results/figures/share_large_gaps"
+* "results/figures/ave_distandhazard"
+* "results/figures/ave_distandhazard_v2"
+* "results/figures/dist_2000vs2003"
+* "results/figures/freq_vs_fracpos"
+* "results/figures/freq_vs_fracpos_option2"
+* "results/figures/freq_vs_fracpos_option3"
+* "results/figures/freq_vs_fracpos_option4"
+* "results/figures/freq_vs_fracpos_option5"
+* "results/figures/freq_vs_fracpos_option6"
+* "results/figures/freq_vs_fracpos_option7"
+* "results/figures/freq_vs_fracpos_option8"
+* "results/figures/freq_rate_refi"
+* "results/figures/freq_casho_refi"
+* "results/figures/freq_purch_refi"
+* "results/figures/shares_vs_actual_decomp"
+* "results/figures/refi_index_mcdash_vs_mba"
+* "results/figures/refi_index_corelogic_vs_mba"
+* "results/figures/predicted_averatefromstep_vs_actualaverate"
+* "results/figures/IMresponsivenessindex"
+* "results/figures/ave_distandhazard_allfirstliens"
+* "results/figures/freq_vs_fracpos_allfirstliens"
+* "results/figures/ave_distandhazard_heterogeneous_reset_r"
+* "results/figures/freq_vs_fracpos_heterogeneous_reset_r."
+* "results/figures/ave_distandhazard_dollarbins"
+* "results/figures/dist_2000vs2003_dollarbins"
+* Intermediates:
+* "results/ave_distandhazard_heterogeneous_reset_r.dta"
+* "results/ave_distandhazard_never_delinquent.dta"
+* "results/ave_distandhazard.dta"
+* "results/ave_distandhazard_only_gse.dta"
+* "inputs/CLTV_national.dta"
+* "thresholds_timeseries.dta"
+* "results/ave_distandhazard_dollarbins.dta"
+* "results/ave_distandhazard_allfirstliens.dta"
+* "C:\Users\jvavra0\Dropbox\Coupon Distribution and Macro Outcomes\vavra\results\distandhazardinputs.dta"
+
+* analysis_national_dollar_gap.do
+* Inputs:
+* "inputs/ratebins_dollars_national_month`j'.dta"
+* "inputs/corelogic_national.dta"
+* "inputs/cpi.dta"
+* "inputs/CLTV_national.dta"
+* "inputs/mp_shocks_data.dta"
+* Outputs:
+* "results/tables/prepaymenteffects_baseline_dollarbins_newey.tex"
+* "results/distandhazardinputs_dollarbins.dta"
+* "results/figures/ave_distandhazard_dollarbins"
+* "results/figures/dist_2000vs2003_dollarbins"
+* Intermediates:
+* "results/ave_distandhazard_dollarbins.dta"
+
+* analysis_regional_clean_with_slidetables.do
+* Inputs:
+* "inputs/ratebins_msa_month`j'.dta"
+* "inputs/corelogic_national.dta"
+* "inputs/cpi.dta"
+* "inputs/CLTV_msa.dta"
+* "T:\vavra\crism\input\msa_nameTOmsadiv2018.dta"
+* "~\Dropbox\Coupon Distribution and Macro Outcomes\empirical\Stata\output\refi_ts_by_msa_complete.dta"
+* "inputs/msa_refi_panel.dta"
+* "inputs/averate_national.dta"
+* "inputs/mp_shocks_data.dta"
+* "inputs\m_aut.dta"
+* "C:\Users\jvavra0\Dropbox\regional_money\QJE files for publication\replication code\empirics\MSAlevelcleaning\input\demographics_byMSA.dta"
+* Outputs:
+* "results/tables/prepaymenteffects_withdecomp_MSA.tex"
+* "results/tables/prepaymenteffects_MSA_slide.tex"
+* "results/tables/prepaymenteffects_withdecomp_MSA_quarterFE.tex"
+* "results/tables/auto_growth_MSA.tex"
+* "results/tables/auto_growth_MSA_slidesshort.tex"
+* "results/tables/auto_growth_MSA_slidesshort_v2.tex"
+* "results/tables/auto_growth_MSA_withCLTVcontrol.tex"
+* "results/tables/auto_growth_MSA_quarterFE.tex"
+* "results/distandhazardinputs_msa.dta"
+* Intermediates:
+* "results/msa_file_for_analysis.dta"
+* "results/ave_distandhazard_msa.dta"
+
+* autos_and_gdp.do
+* Inputs:
+* "autos_and_gdp.dta"
+* Outputs:
+* Intermediates:
+
+* calculate_implied_rate_changes_fullsample.do
+* Inputs:
+* "inputs/national_refi_panel.dta"
+* "inputs/ratebins_national_month`j'_only_gse.dta"
+* "inputs/averate_national.dta"
+* "inputs\freddie_median_ratio_quarterly_refi.dta"
+* "inputs\refi_ratios_crism.dta"
+* "inputs/ratebins_national_month`j'.dta"
+* "~\Dropbox\Coupon Distribution and Macro Outcomes\empirical\Stata\output\ts_fr_by_loan_purpose_v2.dta"
+* "freq.dta"
+* "individual_prepay_by_type_datainput.dta"
+* "T:\vavra\crism\crism_monthly_fullsample\crism\linked_nomoves.dta"
+* Outputs:
+* "results/numrefi_by_gap_bin.csv"
+* "results/numcasho_by_gap_bin.csv"
+* "results/numrefi_by_gap_bin_exboom.csv"
+* "results/numcasho_by_gap_bin_exboom.csv"
+* "results/figures/refi_rate_change_dist_crism_CDF"
+* "results/figures/refi_rate_change_dist_crism_PDF"
+* "results/figures/medianratios_vs_freddie"
+* "results/figures/freq_all_vs_pos"
+* "results/figures/freq_casho_vs_pos"
+* "results/figures/share_pos_vs_freq_all"
+* "results/figures/share_pos_vs_freq_casho"
+* Intermediates:
+* "results/cashout_series.dta"
+* "inputs/rawhazard.dta"
+* "inputs/dr_values_crism.dta"
+
+* coverage_analysis.do
+* Inputs:
+* "C:\Users\jvavra0\Dropbox\Coupon Distribution and Macro Outcomes\empirical\Stata\output\origination_ts_all_agg.dta"
+* "C:\Users\jvavra0\Dropbox\Coupon Distribution and Macro Outcomes\vavra\inputs\hmda.dta"
+* "C:\Users\jvavra0\Dropbox\Coupon Distribution and Macro Outcomes\vavra\inputs\aggregate_origination_volume.dta"
+* Outputs:
+* Intermediates:
+
+* format_deterministic_time_series_output.do
+* Inputs:
+* "T:\vavra\coupon_distribution\new_code_1_21_2020\20200117\0.25_0.228_0\deterministic_path_ouptut_exp_15.csv"
+* "T:\vavra\coupon_distribution\new_code_1_21_2020\pure_menu_cost\20200117\0.01_0_24\deterministic_path_ouptut_exp_15.csv"
+* "inputs/averate_national.dta"
+* Outputs:
+* Intermediates:
+
+* fracpos_responses_tolagged_r.do
+* Inputs:
+* "inputs/ratebins_national_month`j'.dta"
+* "results/ave_distandhazard.dta"
+* "inputs/corelogic_national.dta"
+* "inputs/ARMshare.dta"
+* "inputs/cpi.dta"
+* "inputs/CLTV_national.dta"
+* "inputs/mp_shocks_data.dta"
+* "inputs/averate_national.dta"
+* "inputs\fracpos_model_sims.dta"
+* Outputs:
+* Intermediates:
+
+* hybrid_model_vs_data.do
+* Inputs:
+* `file' and `file2' are a wide range of items, cartesian product of three sets of 10. kappa in "0.03" "0.035" "0.04" "0.045" "0.05" "0.055" "0.06" "0.065" "0.07" chi1 in "0.1" "0.105" "0.11" "0.115" "0.12" "0.125" "0.13" "0.135" "0.14" "0.145" "0.15" "0.155" chi2 in "0.09" "0.1" "0.11" "0.12" "0.13" "0.135" "0.14" "0.145" local param="`kappa'_`chi1'_`chi2'" local file="T:\vavra\coupon_distribution\new_code_1_13_2020\20200109\"+"`param'"+"\refi_intensity_exp_15.csv" local file2="T:\vavra\coupon_distribution\new_code_1_13_2020\20200109\"+"`param'"+"\density_coupon_change_exp_15.csv"
+* "T:\vavra\crism\crism_monthly_fullsample\hazard_individual_heterogeneous_reset_r.dta"
+* Outputs:
+* "hazard_hybrid.csv"
+* "hazard_data.csv"
+* "hazard_menu.csv"
+* "hybrid_model_vs_data_withCI"
+* "calvo_model_vs_data_withCI"
+* Intermediates:
+* tempfile "`hazards'"
+* "results.dta"
+
+* individual_prepay_regs_by_type.do
+* Inputs:
+* "crism/frm.tmp"
+* "T:/vavra/crism/crism_monthly_fullsample/corelogic/hpi_zip.dta"
+* "T:/vavra/crism/crism_monthly_fullsample/corelogic/hpi_msa.dta"
+* "T:\vavra\crism\crism_monthly_fullsample\crism\refi_and_cashout_by_cid_loanid_datem.dta"
+* "crism/full1_lps.dta"
+* Outputs:
+* "hazard_individual"
+* "hazard_individual_bytype"
+* Intermediates:
+* "rate_refi.dta"
+* "cashout_refi.dta"
+* "rate_refi2.dta"
+* "cashout_refi2.dta"
+* "purch.dta"
+* "individual_prepay_by_type_datainput.dta"
+
+* make_msa_auto.do
+* Inputs:
+* "C:\Users\jvavra0\Dropbox\Coupon Distribution and Macro Outcomes\vavra\inputs\zipTOmsadiv.dta"
+* "C:\Users\jvavra0\Dropbox\Coupon Distribution and Macro Outcomes\vavra\inputs\uniquezip3TOmsadiv.dta"
+* "C:\Users\jvavra0\Dropbox\polk_data\ZMpolkautosales_20180209.dta"
+* Outputs:
+* "inputs\m_aut.dta"
+* Intermediates:
+
+* make_SCF_calibration.do
+* Inputs:
+* Correct path of "~/Dropbox/Consumption in the recession/scf/KV SCF replication/data/scf2001_final.dta" and "C:\Users\jvavra0\Dropbox\Consumption in the recession\scf\KV SCF replication\data\scf2001_final.dta"
+* Outputs:
+* Intermediates:
+
+* time_varying_thresholds.do
+* Inputs:
+* "inputs/ratebins_national_month`j'.dta"
+* Outputs:
+* Intermediates:
+* "`temp_100'"
+* "`temp_25'"
+* "`temp_0'"
+* "`temp_75'"
+* "`temp_50'"
+
