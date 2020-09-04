@@ -1,0 +1,16 @@
+* Automatically generated I-O mappings
+* code by Isaac Liu with help from M Z on Stack Overflow
+
+* make_mcdashzip_to_oldMSAlink.do
+* Inputs:
+* "T:\vavra\crism\input\zipTOmsadiv.dta"
+* "T:\vavra\crism\input\uniquezip3_to_MSA_links.dta"
+* "C:\Users\jvavra0\Dropbox\crism\BFHV\data_AF\loanidmsa.dta"
+* "T:\vavra\crism\mcdash\Loan.dta"
+* "~/Dropbox/CRISM/BFHVcode_clean/MSAlevelcleaning/outputAF/master_jul2017.dta"
+* Outputs:
+* "T:\vavra\crism\input\make_mcdash_to_oldMSA_link\zips_linkable_to_MSAsforanalysis.dta"
+* Intermediates:
+* "T:\vavra\crism\input\make_mcdash_to_oldMSA_link\mcdashzip_to_old_MSAlink.dta"
+* "T:\vavra\crism\input\make_mcdash_to_oldMSA_link\MSAs_for_final_analysis.dta"
+
