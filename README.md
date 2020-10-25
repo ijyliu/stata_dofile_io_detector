@@ -1,5 +1,5 @@
 # stata_dofile_io_detector
-A primitive regEx based Python program to detect inputs and outputs to Stata do files.
+A primitive regEx based Python program which detects inputs and outputs to Stata do files.
 
 ## Versions
 The A version is the main, most up-to-date and supported version.
