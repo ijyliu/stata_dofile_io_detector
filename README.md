@@ -1,4 +1,4 @@
-# stata_dofile_io_detector
+# Stata Dofile I/O Detector
 A primitive regEx based Python program which detects inputs and outputs to Stata do files.
 
 ## Versions
