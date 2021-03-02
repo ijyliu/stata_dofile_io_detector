@@ -6,18 +6,14 @@
 
 import sys
 
-print("\nPath to the dofiles:", sys.argv[1])
-print("\nPath to write output to:", sys.argv[2])
-print("\nOutput file name:", sys.argv[3])
-
+print("\nFolder with the dofiles (the search can be recursive):", sys.argv[1])
+print("\nFile to write output to (no extension):", sys.argv[2])
 
 # Set path to the common directory of dofiles
 path = sys.argv[1]
 
-# Set write_to_path and name to a place where you want the file listing IO to be saved
-write_to_path = sys.argv[2]
-# Saved automatically with extension .txt
-write_to_name = sys.argv[3]
+# Set write_to to a file where you want the file listing IO to be saved
+write_to = sys.argv[2]
 
 def fix_path(path):
     path = path.replace("\\", "/")
@@ -326,7 +322,7 @@ for dofile in dofiles:
             project_intermediates.append(output)
 
 # Write the overall list of inputs and outputs to a .txt file
-with open(write_to_path + "/" + write_to_name + '.txt', 'w') as f:
+with open(write_to + '.txt', 'w') as f:
     f.write("* Automatically generated I-O mappings\n")
     f.write("* code by Isaac Liu with help from M Z on Stack Overflow\n")
     f.write("\n")
@@ -354,4 +350,4 @@ with open(write_to_path + "/" + write_to_name + '.txt', 'w') as f:
     for output in final_outputs:
         f.write("* " + output + "\n")
 
-print("\nA list of inputs and outputs has been written to", write_to_path + "/" + write_to_name + '.txt.' + "\n")
+print("\nA list of inputs and outputs has been written to ", write_to + '.txt.' + "\n")
