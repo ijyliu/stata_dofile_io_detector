@@ -292,6 +292,27 @@ for dofile in dofiles:
     if "\"fig1\"" in dofile.outputs:
         dofile.outputs.remove("\"fig1\"")
 
+# Perform some global inputs/outputs analysis
+all_inputs = []
+all_outputs = []
+starting_inputs = []
+final_outputs = []
+project_intermediates = []
+for dofile in dofiles:
+    for input in dofile.inputs:
+        all_inputs.append(input)
+    for output in dofile.outputs:
+        all_outputs.append(output)
+    for input in all_inputs:
+        if input not in all_outputs:
+            starting_inputs.append(input)
+    for output in all_outputs:
+        if output not in all_inputs:
+            final_outputs.append(output)
+        # capture intermediates also (all intermediates are both outputs and inputs)
+        elif output not in project_intermediates:
+            project_intermediates.append(output)
+
 # Write the overall list of inputs and outputs to a .txt file
 with open(write_to_path + "/" + write_to_name + '.txt', 'w') as f:
     f.write("* Automatically generated I-O mappings\n")
@@ -309,5 +330,16 @@ with open(write_to_path + "/" + write_to_name + '.txt', 'w') as f:
         for intermediate in dofile.intermediates:
             f.write("* " + intermediate + "\n")
         f.write("\n")
+    # Also write the global inputs/outputs and intermediates
+    f.write("Project starting inputs:" + "\n")
+    for input in starting_inputs:
+        f.write("* " + input + "\n")
+    f.write("Project intermediates:" + "\n")
+    for intermediate in project_intermediates:
+        f.write("* " + intermediate + "\n")
+    f.write("Project final outputs:" + "\n")
+    for output in final_outputs:
+        f.write("* " + output + "\n")
+    f.write("\n")
 
 print("\nA list of inputs and outputs has been written to", write_to_path + "/" + write_to_name + '.txt.' + '\n')
