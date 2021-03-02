@@ -7,7 +7,9 @@ A primitive regEx based Python program which detects inputs and outputs to Stata
 From the command line, run
 
 ```
-python 'Automated dofile I-O mapper.py' <directory of dofiles> <directory of IO list output> <filename of IO list output, no extension>
+python 'd-IO-file.py' <directory of dofiles> <directory of IO list output> <filename of IO list output, no extension>
 ```
 
 using quotations to enclose arguments with spaces.
+
+A stand-alone executable is currently in development. https://stackoverflow.com/questions/5458048/how-can-i-make-a-python-script-standalone-executable-to-run-without-any-dependen
