@@ -331,15 +331,15 @@ with open(write_to_path + "/" + write_to_name + '.txt', 'w') as f:
             f.write("* " + intermediate + "\n")
         f.write("\n")
     # Also write the global inputs/outputs and intermediates
+    f.write("Project starting inputs, intermediates, and final outputs:" + "\n")
     f.write("Project starting inputs:" + "\n")
     for input in starting_inputs:
         f.write("* " + input + "\n")
-    f.write("Project intermediates:" + "\n")
+    f.write("Project intermediates (does not include files internal to a single script):" + "\n")
     for intermediate in project_intermediates:
         f.write("* " + intermediate + "\n")
     f.write("Project final outputs:" + "\n")
     for output in final_outputs:
         f.write("* " + output + "\n")
-    f.write("\n")
 
-print("\nA list of inputs and outputs has been written to", write_to_path + "/" + write_to_name + '.txt.' + '\n')
+print("\nA list of inputs and outputs has been written to", write_to_path + "/" + write_to_name + '.txt.' + "\n")
