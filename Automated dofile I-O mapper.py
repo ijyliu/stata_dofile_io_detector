@@ -293,6 +293,15 @@ for dofile in dofiles:
         dofile.outputs.remove("\"fig1\"")
 
 # Perform some global inputs/outputs analysis
+
+# Here I aim to use filenames only, keeping only the segments after the last \ or / and also removing .dta extensions
+def filename_no_dta_ext(string):
+    no_dta = string.replace(".dta", "")
+    no_quotes = no_dta.replace("\"", "")
+    name_match = re.search(r'([^\\\/]*)$', no_quotes)
+    name_only = name_match.group(1)
+    return "\"" + name_only + "\""
+
 all_inputs = []
 all_outputs = []
 starting_inputs = []
@@ -300,9 +309,11 @@ final_outputs = []
 project_intermediates = []
 for dofile in dofiles:
     for input in dofile.inputs:
-        all_inputs.append(input)
+        if input not in all_inputs:
+            all_inputs.append(filename_no_dta_ext(input))
     for output in dofile.outputs:
-        all_outputs.append(output)
+        if output not in all_outputs:
+            all_outputs.append(filename_no_dta_ext(output))
     for input in all_inputs:
         if input not in all_outputs:
             starting_inputs.append(input)
@@ -332,13 +343,13 @@ with open(write_to_path + "/" + write_to_name + '.txt', 'w') as f:
         f.write("\n")
     # Also write the global inputs/outputs and intermediates
     f.write("Project starting inputs, intermediates, and final outputs:" + "\n")
-    f.write("Project starting inputs:" + "\n")
+    f.write("\n" + "Project starting inputs:" + "\n")
     for input in starting_inputs:
         f.write("* " + input + "\n")
-    f.write("Project intermediates (does not include files internal to a single script):" + "\n")
+    f.write("\n" + "Project intermediates (does not include files internal to a single script):" + "\n")
     for intermediate in project_intermediates:
         f.write("* " + intermediate + "\n")
-    f.write("Project final outputs:" + "\n")
+    f.write("\n" + "Project final outputs:" + "\n")
     for output in final_outputs:
         f.write("* " + output + "\n")
 
