@@ -1,89 +1,75 @@
-# ---
-# jupyter:
-#   jupytext:
-#     text_representation:
-#       extension: .py
-#       format_name: light
-#       format_version: '1.5'
-#       jupytext_version: 1.6.0
-#   kernelspec:
-#     display_name: Python 3
-#     language: python
-#     name: python3
-# ---
+# Automated dofile I-O Mapper
+# Code by Isaac Liu with help from M Z on Stack Overflow
 
-# +
-# Alternate version of the I-O detector
-# NOTE: DO NOT USE in cases where multiple files have the same name, but different paths.
+# Get the command line arguments
 
-# +
-# USER ADJUSTMENTS
+import sys
+
+print("\nPath to the dofiles:", sys.argv[1])
+print("\nPath to write output to:", sys.argv[2])
+print("\nOutput file name:", sys.argv[3])
+
 
 # Set path to the common directory of dofiles
-# On windows, correct \ to /
-# Path should end with a /
-path = ''
+path = sys.argv[1]
 
 # Set write_to_path and name to a place where you want the file listing IO to be saved
-# On windows, correct \ to /
-# Path should end with a /
-write_to_path = ''
+write_to_path = sys.argv[2]
 # Saved automatically with extension .txt
-write_to_name = ''
+write_to_name = sys.argv[3]
 
-# +
+def fix_path(path):
+    path = path.replace("\\", "/")
+    return(path)
+
 # Detect the dofiles in the directory
 # Note this is not a recursive search
 # Source: https://stackoverflow.com/questions/3207219/how-do-i-list-all-files-of-a-directory
-from os import listdir
-from os.path import isfile, join
-onlyfiles = [f for f in listdir(path) if isfile(join(path, f))]
+import os
+allfiles = [(fix_path(dp), f) for dp, dn, fn in os.walk(os.path.expanduser(path)) for f in fn]
 
 # Filter to only dofiles
-dofile_names = [f for f in onlyfiles if f[-3:] == '.do']
+dfs = [df for df in allfiles if df[1][-3:] == '.do']
 
-
-# +
 # Set up the structure for dofile objects (a collection of lists)
 class dofile:
     def __init__(self):
+        self.path = ""
         self.name = ""
         self.lines = []
         self.flags_com = []
+        self.flags_program = []
         self.inputs = []
         self.outputs = []
         self.intermediates = []
     
 # Basic classes syntax: https://www.learnpython.org/en/Classes_and_Objects
 
-
-# +
 # Code structure note: for the purposes of debugging, I am making many small loops.
 # I understand that having one big loop probably runs faster.
-# -
 
 # Create dofile objects based on names
 dofiles = []
-for name in dofile_names:
+for d in dfs:
     df = dofile()
-    df.name = name
+    df.path = d[0]
+    df.name = d[1]
     dofiles.append(df)
 
 # Read in the files, line by line.
 # I use splitlines to get rid of newlines and then strip to get rid of tabs.
 for dofile in dofiles:
-    with open(path + dofile.name, 'r') as f:
+    with open(dofile.path + "/" + dofile.name, 'r') as f:
         dofile.lines = [line.strip() for line in f.read().splitlines()]
 
 # Clean out blank lines (otherwise we will get index errors later)
 for dofile in dofiles:
     dofile.lines = [line for line in dofile.lines if line != '']
 
-# +
+
 # At the moment it appears hard to detect comment blocks w/ /* notation, but here's an attempt.
 # https://stackoverflow.com/questions/36860206/delete-lines-between-two-patterns-when-there-are-multiple-matches-in-python
 
-# +
 # A key problem appears to be unpredictable comment structure- ie nested comments, a pattern such as:
 # /*
 # /*
@@ -94,15 +80,19 @@ for dofile in dofiles:
 # Experimentally, I'm developing flags to represent a 'level' of nested comment. Overall, anything with level 1 or higher
 # will be treated as commented out.
 
-# +
+
 # Prep for RegEx detection
 # Guide: https://developers.google.com/edu/python/regular-expressions
 
 import re
 
-# +
+
 # Clean out /* to */ commented blocks
-# -
+
+
+# Still to tackle: cases where /* is used in the middle of a line but we still want the
+# first part before that, for example.
+
 
 for dofile in dofiles:
     flag = 0
@@ -114,11 +104,6 @@ for dofile in dofiles:
         match2 = re.search(r'\*\/', line)
         if match2:
             flag -= 1       
-
-# +
-# Still to tackle: cases where /* is used in the middle of a line but we still want the
-# first part before that, for example.
-# -
 
 for dofile in dofiles:
     dofile.lines = [l for l, f in zip(dofile.lines, dofile.flags_com) if f == 0]
@@ -132,80 +117,87 @@ for dofile in dofiles:
 for dofile in dofiles:
     dofile.lines = [line.split("//")[0] for line in dofile.lines]
 
-# +
-# Possible code to interpret files with the same filename but different full paths
-# as the same file, both for recording i-o and for marking intermediates
-# -
 
-# Create a long paths list which will store the longest path name for as many files as possible.
-long_paths = []
+# Clean out program blocks
+for dofile in dofiles:
+    flag = 0
+    for line in dofile.lines:
+        match = re.search('^program', line)
+        if match:
+            flag += 1
+        dofile.flags_program.append(flag)
+        match2 = re.search('^end', line)
+        if match2:
+            flag -= 1    
 
-
-# Create a function which takes a long path and returns a file name if it can detect it;
-# else return the same long_path
-def find_file_name(long_path):
-    name_match = re.search(r'[^\\\/]+\.[^\"]+', long_path)
-    if name_match:
-        return name_match.group()
-    else:
-        no_period_match = re.search(r'[^\\\/]+$', long_path)
-        if no_period_match:
-            return no_period_match.group()
-    return long_path
+for dofile in dofiles:
+    dofile.lines = [l for l, f in zip(dofile.lines, dofile.flags_program) if f == 0]
 
 
-# +
-#for dofile in dofiles:
-#    dofile.inputs = [checked_names(input) for input in dofile.inputs]
-#    dofile.outputs = [checked_names(output) for output in dofile.outputs]
+# I structure the detected i/o as tuples, in case later we want to go back and retrieve the kind of input... 
+# ie using, versus use etc.
 
-# +
-# Beginning I/O detection:
+
 # Code should be adjusted to allow for spaces within file paths and other weird behavior, as
 # long as the file path is in quotes (single or double). I handle this by relaxing the
 # 'NOT SPACE' restriction and just having the match run until there is a comma or end of line.
 
-# +
+
 # Using is a complicated case that can be involved in inputs and outputs.
-# -
+
 
 # using
 for dofile in dofiles:
     for line in dofile.lines:
-        using_match = re.search(r'using ([^\s,]+)', line)
+        using_match = re.search(r' using +([^\s,]+)', line)
         if using_match:
-            use_match = re.search(r'use', line)
+            use_match = re.search(r'\buse', line)
             append_match = re.search(r'append', line)
             merge_match = re.search(r'merge', line)
             is_match = re.search(r'insheet', line)
             id_match = re.search(r'import delimited', line)
             os_match = re.search(r'outsheet', line)
+            et_match = re.search(r'esttab', line)
+            jb_match = re.search(r'joinby', line)
             to_add = using_match.group(1)
             if to_add[0] == "\"" or to_add[0] == "\'":
-                q_match = re.search(r'using ([^,\n]+)', line)
+                q_match = re.search(r'using +([^,\n]+)', line)
                 to_add = q_match.group(1)
-            long_paths.append(to_add)
-            to_add = find_file_name(to_add)
-            if (use_match or append_match or merge_match or is_match or id_match) and to_add not in dofile.inputs:
+            if (use_match or append_match or merge_match or is_match or id_match or jb_match) and to_add not in dofile.inputs:
                 dofile.inputs.append(to_add)
-            if (os_match) and to_add not in dofile.outputs:
+            if (os_match or et_match) and to_add not in dofile.outputs:
                 dofile.outputs.append(to_add)
 
-# +
+# parmest/parmby saving
+for dofile in dofiles:
+    for line in dofile.lines:
+        saving_match = re.search(r'saving\(([^\s,)]+)', line)
+        if saving_match:
+            parmest_match = re.search(r'parmest', line)
+            parmby_match = re.search(r'parmby', line)
+            to_add = saving_match.group(1)
+            if to_add[0] == "\"" or to_add[0] == "\'":
+                q_match = re.search(r'using +([^,\n]+)', line)
+                to_add = q_match.group(1)
+            if (parmest_match or parmby_match) and to_add not in dofile.outputs:
+                dofile.outputs.append(to_add)
+
+
 # Input detectors
-# -
+
 
 # use
 for dofile in dofiles:
     for line in dofile.lines:
-        use_match = re.search(r'use ([^\s,]+)', line)
-        if use_match:
+        use_match = re.search(r'\buse +([^\s,]+)', line)
+        # DON'T detect lines with using in them, as these have already been caught, and
+        # the detector will toss in variable names!
+        using_match = re.search(r' using', line)
+        if use_match and not using_match:
             to_add = use_match.group(1)
             if to_add[0] == "\"" or to_add[0] == "\'":
-                q_match = re.search(r'use ([^,\n]+)', line)
+                q_match = re.search(r'\buse +([^,\n]+)', line)
                 to_add = q_match.group(1)
-            long_paths.append(to_add)
-            to_add = find_file_name(to_add)
             if to_add not in dofile.inputs:
                 dofile.inputs.append(to_add)
 
@@ -213,89 +205,58 @@ for dofile in dofiles:
 # only match if not already caught by using
 for dofile in dofiles:
     for line in dofile.lines:
-        id_match = re.search(r'import delimited ([^\s,]+)', line)
-        using_match = re.search(r'using', line)
+        id_match = re.search(r'import +delimited +([^\s,]+)', line)
+        using_match = re.search(r' using', line)
         if id_match and not using_match:
             to_add = id_match.group(1)
             if to_add[0] == "\"" or to_add[0] == "\'":
-                q_match = re.search(r'import delimited ([^,\n]+)', line)
+                q_match = re.search(r'import +delimited +([^,\n]+)', line)
                 to_add = q_match.group(1)
-            long_paths.append(to_add)
-            to_add = find_file_name(to_add)
             if to_add not in dofile.inputs:
                 dofile.inputs.append(to_add)
 
-# +
+
 # Output detectors
-# -
+
+
+# graph export
+for dofile in dofiles:
+    for line in dofile.lines:
+        ge_match = re.search(r'graph +export +([^\s,]+)', line)
+        if ge_match:
+            to_add = ge_match.group(1)
+            if to_add[0] == "\"" or to_add[0] == "\'":
+                q_match = re.search(r'graph +export +([^,\n]+)', line)
+                to_add = q_match.group(1)
+            if to_add not in dofile.outputs:
+                dofile.outputs.append(to_add)
 
 # save
 for dofile in dofiles:
     for line in dofile.lines:
-        save_match = re.search(r'save ([^\s,]+)', line)
+        save_match = re.search(r'save +([^\s,]+)', line)
         if save_match:
             to_add = save_match.group(1)
             if to_add[0] == "\"" or to_add[0] == "\'":
-                q_match = re.search(r'save ([^,\n]+)', line)
+                q_match = re.search(r'save +([^,\n]+)', line)
                 to_add = q_match.group(1)
-            long_paths.append(to_add)
-            to_add = find_file_name(to_add)
             if to_add not in dofile.outputs:
                 dofile.outputs.append(to_add)
 
 # save_chart
 for dofile in dofiles:
     for line in dofile.lines:
-        sc_match = re.search(r'save_chart ([^\s,]+)', line)
+        sc_match = re.search(r'save_chart +([^\s,]+)', line)
         if sc_match:
             to_add = sc_match.group(1)
             if to_add[0] == "\"" or to_add[0] == "\'":
-                q_match = re.search(r'save_chart ([^,\n]+)', line)
+                q_match = re.search(r'save_chart +([^,\n]+)', line)
                 to_add = q_match.group(1)
-            long_paths.append(to_add)
-            to_add = find_file_name(to_add)
             if to_add not in dofile.outputs:
                 dofile.outputs.append(to_add)
 
 
-# +
-# Now we should have long_path full of paths and inputs and outputs full of file_names.
-# We will now replace these items in inputs and outputs with the longest paths
 
-# +
-# Create a function which takes a file name and tries to find the fullest path
-# Probably not the most efficient way to do this, but function will need file_name objects to keep lists together.
-# -
-
-# Set up structure for file_name objects (again, a smaller collection of lists)
-class file_name_obj:
-    def __init__(self):
-        self.name = ""
-        self.paths = []
-        self.longest_path = ""
-
-
-# Create a function which takes a file name and tries to find the fullest path
-def find_longest_path(file_name):
-    paths = []
-    longest_path = ""
-    for long_path in long_paths:
-        long_path_match = re.search(file_name, long_path)
-        if long_path_match:
-            paths.append(long_path)
-    if paths == []:
-        return file_name
-    longest_path = max(paths, key=len)
-    return longest_path
-
-
-# Use function to expand inputs and outputs file names to longest paths.
-for dofile in dofiles:
-    dofile.inputs = [find_longest_path(input) for input in dofile.inputs]
-    dofile.outputs = [find_longest_path(output) for output in dofile.outputs]
-
-
-# +
 # Add quotes to inputs and outputs if they don't already have them.
 
 # Define a simple function for this to be easier with list comprehension
@@ -309,7 +270,7 @@ def cond_q_pad(string):
 for dofile in dofiles:
     dofile.inputs = [cond_q_pad(input) for input in dofile.inputs]
     dofile.outputs = [cond_q_pad(output) for output in dofile.outputs]
-# -
+
 
 # Handle intermediates- file is in the input list and output list
 for dofile in dofiles:
@@ -319,15 +280,20 @@ for dofile in dofiles:
         dofile.outputs.remove(intermediate)
 
 # Toss fig1 and `0' from save_chart example code
-# This chunk can be removed if /* and */ treatment can be improved.
+# This chunk can be removed if /* and */ treatment can be improved, 
+# and if macro treatment and program treatment can be improved
 for dofile in dofiles:
     if "\"`0\'\"" in dofile.outputs:
         dofile.outputs.remove("\"`0\'\"")
+    if "\"`0\'\.eps\"" in dofile.outputs:
+        dofile.outputs.remove("\"`0\'\.eps\"")
+    if "\"`0\'\.pdf\"" in dofile.outputs:
+        dofile.outputs.remove("\"`0\'\.pdf\"")
     if "\"fig1\"" in dofile.outputs:
         dofile.outputs.remove("\"fig1\"")
 
 # Write the overall list of inputs and outputs to a .txt file
-with open(write_to_path + write_to_name + '.txt', 'w') as f:
+with open(write_to_path + "/" + write_to_name + '.txt', 'w') as f:
     f.write("* Automatically generated I-O mappings\n")
     f.write("* code by Isaac Liu with help from M Z on Stack Overflow\n")
     f.write("\n")
@@ -343,3 +309,5 @@ with open(write_to_path + write_to_name + '.txt', 'w') as f:
         for intermediate in dofile.intermediates:
             f.write("* " + intermediate + "\n")
         f.write("\n")
+
+print("\nA list of inputs and outputs has been written to", write_to_path + "/" + write_to_name + '.txt.' + '\n')
