@@ -304,22 +304,24 @@ all_outputs = []
 starting_inputs = []
 final_outputs = []
 project_intermediates = []
+# Loop over the dofiles to collect all inputs and outputs
 for dofile in dofiles:
     for input in dofile.inputs:
-        if input not in all_inputs:
+        if filename_no_dta_ext(input) not in all_inputs:
             all_inputs.append(filename_no_dta_ext(input))
     for output in dofile.outputs:
-        if output not in all_outputs:
+        if filename_no_dta_ext(output) not in all_outputs:
             all_outputs.append(filename_no_dta_ext(output))
-    for input in all_inputs:
-        if input not in all_outputs:
-            starting_inputs.append(input)
-    for output in all_outputs:
-        if output not in all_inputs:
-            final_outputs.append(output)
-        # capture intermediates also (all intermediates are both outputs and inputs)
-        elif output not in project_intermediates:
-            project_intermediates.append(output)
+# Build a global starting inputs, outputs, and intermediates list
+for input in all_inputs:
+    if input not in all_outputs:
+        starting_inputs.append(input)
+for output in all_outputs:
+    if output not in all_inputs:
+        final_outputs.append(output)
+    # capture intermediates also (all intermediates are both outputs and inputs)
+    elif output not in project_intermediates:
+        project_intermediates.append(output)
 
 # Write the overall list of inputs and outputs to a .txt file
 with open(write_to + '.txt', 'w') as f:
