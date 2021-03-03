@@ -149,6 +149,8 @@ for dofile in dofiles:
 for dofile in dofiles:
     dofile.lines = [re.sub(r"`[^`']+'",r"`macro'",l) for l in dofile.lines] 
 
+# Stripping .dta extensions
+
 # Using is a complicated case that can be involved in inputs and outputs.
 
 
