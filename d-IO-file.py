@@ -3,20 +3,18 @@
 # Code by Isaac Liu with help from M Z on Stack Overflow
 
 # Get the command line arguments
-
-# Set path to the common directory of dofiles
-path = input("\nFolder with the dofiles (the search can be recursive): ")
+dofiles_target = input("\nFolder with the dofiles (the search can be recursive): ")
 write_to = input("\nFile to write output to (you can include a path, but no extension): ")
 
-def fix_path(path):
-    path = path.replace("\\", "/")
-    return(path)
+def fix_dofiles_target(dofiles_target):
+    dofiles_target = dofiles_target.replace("\\", "/")
+    return(dofiles_target)
 
 # Detect the dofiles in the directory
 # Note this is not a recursive search
 # Source: https://stackoverflow.com/questions/3207219/how-do-i-list-all-files-of-a-directory
 import os
-allfiles = [(fix_path(dp), f) for dp, dn, fn in os.walk(os.path.expanduser(path)) for f in fn]
+allfiles = [(fix_dofiles_target(dp), f) for dp, dn, fn in os.walk(os.path.expanduser(dofiles_target)) for f in fn]
 
 # Filter to only dofiles
 dfs = [df for df in allfiles if df[1][-3:] == '.do']
