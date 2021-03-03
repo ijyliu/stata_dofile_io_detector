@@ -2,9 +2,24 @@
 # Automated dofile I-O Mapper
 # Code by Isaac Liu with help from M Z on Stack Overflow
 
-# Get the command line arguments
-dofiles_target = input("\nFolder with the dofiles (the search can be recursive): ")
-write_to = input("\nFile to write output to (you can include a path, but no extension): ")
+import os
+from os import path
+
+# Get the command line arguments and ensure the file/folder locations specified are valid
+# Source: https://stackoverflow.com/questions/23294658/asking-the-user-for-input-until-they-give-a-valid-response
+while True:
+    dofiles_target = input("\nTarget dofile or directory (can include subdirectories): ")
+    if not path.exists(dofiles_target):
+        print("\nPlease check that the target folder/file you input exists and enter it again: ")
+    else: break
+while True:
+    try: 
+        write_to = input("\nFile to write output to (you can include a path, but no extension): ")
+        test = open(write_to + '.txt', 'w')
+        test.close()
+    except FileNotFoundError:
+        print("\nPlease check that the output location you input exists and enter it again: ")
+    else: break
 
 def fix_dofiles_target(dofiles_target):
     dofiles_target = dofiles_target.replace("\\", "/")
@@ -13,7 +28,6 @@ def fix_dofiles_target(dofiles_target):
 # Detect the dofiles in the directory
 # Note this is not a recursive search
 # Source: https://stackoverflow.com/questions/3207219/how-do-i-list-all-files-of-a-directory
-import os
 allfiles = [(fix_dofiles_target(dp), f) for dp, dn, fn in os.walk(os.path.expanduser(dofiles_target)) for f in fn]
 
 # Filter to only dofiles
