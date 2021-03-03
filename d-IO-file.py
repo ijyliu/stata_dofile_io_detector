@@ -15,6 +15,7 @@ while True:
 while True:
     try: 
         write_to = input("\nFile to write output to (you can include a path, but no extension): ")
+        write_to = write_to.replace(".txt", "")
         test = open(write_to + '.txt', 'w')
         test.close()
     except FileNotFoundError:
