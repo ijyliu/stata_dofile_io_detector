@@ -1,13 +1,9 @@
-# Stata Dofile I/O Detector
+# d-IO-file, a Stata Dofile I/O Detector
 
-A primitive regEx based Python program which detects inputs and outputs to Stata do files.
+A primitive regEx based Python program which detects inputs and outputs to Stata do files and produces a .txt output.
 
 ## Usage
 
-From the command line, run
+Run the executable `d-IO-file.exe` by clicking on it or by typing `.\d-IO-file.exe` on the command line. Alternatively, if you have python installed, you can run `python d-IO-file.py`.
 
-```
-python 'Automated dofile I-O mapper.py' <directory of dofiles> <directory of IO list output> <filename of IO list output, no extension>
-```
-
-using quotations to enclose arguments with spaces.
+Follow the prompts to input a target directory of dofiles (the search is recursive and this can contain subdirectories), and a file name for the desired location of output (without the extension).

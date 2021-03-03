@@ -1,32 +1,35 @@
+# d-IO-file.py
 # Automated dofile I-O Mapper
 # Code by Isaac Liu with help from M Z on Stack Overflow
 
-# Get the command line arguments
+import os
+from os import path
 
-import sys
+# Get the command line arguments and ensure the file/folder locations specified are valid
+# Source: https://stackoverflow.com/questions/23294658/asking-the-user-for-input-until-they-give-a-valid-response
+while True:
+    dofiles_target = input("\nTarget dofile or directory (can include subdirectories): ")
+    if not path.exists(dofiles_target):
+        print("\nPlease check that the target folder/file you input exists and enter it again: ")
+    else: break
+while True:
+    try: 
+        write_to = input("\nFile to write output to (you can include a path, but no extension): ")
+        write_to = write_to.replace(".txt", "")
+        test = open(write_to + '.txt', 'w')
+        test.close()
+    except FileNotFoundError:
+        print("\nPlease check that the output location you input exists and enter it again: ")
+    else: break
 
-print("\nPath to the dofiles:", sys.argv[1])
-print("\nPath to write output to:", sys.argv[2])
-print("\nOutput file name:", sys.argv[3])
-
-
-# Set path to the common directory of dofiles
-path = sys.argv[1]
-
-# Set write_to_path and name to a place where you want the file listing IO to be saved
-write_to_path = sys.argv[2]
-# Saved automatically with extension .txt
-write_to_name = sys.argv[3]
-
-def fix_path(path):
-    path = path.replace("\\", "/")
-    return(path)
+def fix_dofiles_target(dofiles_target):
+    dofiles_target = dofiles_target.replace("\\", "/")
+    return(dofiles_target)
 
 # Detect the dofiles in the directory
 # Note this is not a recursive search
 # Source: https://stackoverflow.com/questions/3207219/how-do-i-list-all-files-of-a-directory
-import os
-allfiles = [(fix_path(dp), f) for dp, dn, fn in os.walk(os.path.expanduser(path)) for f in fn]
+allfiles = [(fix_dofiles_target(dp), f) for dp, dn, fn in os.walk(os.path.expanduser(dofiles_target)) for f in fn]
 
 # Filter to only dofiles
 dfs = [df for df in allfiles if df[1][-3:] == '.do']
@@ -307,6 +310,7 @@ all_outputs = []
 starting_inputs = []
 final_outputs = []
 project_intermediates = []
+# Loop over the dofiles to collect all inputs and outputs
 for dofile in dofiles:
     for input in dofile.inputs:
         if filename_no_dta_ext(input) not in all_inputs:
@@ -314,18 +318,19 @@ for dofile in dofiles:
     for output in dofile.outputs:
         if filename_no_dta_ext(output) not in all_outputs:
             all_outputs.append(filename_no_dta_ext(output))
-    for input in all_inputs:
-        if input not in all_outputs:
-            starting_inputs.append(input)
-    for output in all_outputs:
-        if output not in all_inputs:
-            final_outputs.append(output)
-        # capture intermediates also (all intermediates are both outputs and inputs)
-        elif output not in project_intermediates:
-            project_intermediates.append(output)
+# Build a global starting inputs, outputs, and intermediates list
+for input in all_inputs:
+    if input not in all_outputs:
+        starting_inputs.append(input)
+for output in all_outputs:
+    if output not in all_inputs:
+        final_outputs.append(output)
+    # capture intermediates also (all intermediates are both outputs and inputs)
+    elif output not in project_intermediates:
+        project_intermediates.append(output)
 
 # Write the overall list of inputs and outputs to a .txt file
-with open(write_to_path + "/" + write_to_name + '.txt', 'w') as f:
+with open(write_to + '.txt', 'w') as f:
     f.write("* Automatically generated I-O mappings\n")
     f.write("* code by Isaac Liu with help from M Z on Stack Overflow\n")
     f.write("\n")
@@ -353,4 +358,4 @@ with open(write_to_path + "/" + write_to_name + '.txt', 'w') as f:
     for output in final_outputs:
         f.write("* " + output + "\n")
 
-print("\nA list of inputs and outputs has been written to", write_to_path + "/" + write_to_name + '.txt.' + "\n")
+print("\nA list of inputs and outputs has been written to", write_to + '.txt.' + "\n")
