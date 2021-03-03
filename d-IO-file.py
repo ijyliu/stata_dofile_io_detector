@@ -4,16 +4,9 @@
 
 # Get the command line arguments
 
-import sys
-
-print("\nFolder with the dofiles (the search can be recursive):", sys.argv[1])
-print("\nFile to write output to (you can include a path, but no extension):", sys.argv[2])
-
 # Set path to the common directory of dofiles
-path = sys.argv[1]
-
-# Set write_to to a file where you want the file listing IO to be saved
-write_to = sys.argv[2]
+path = input("\nFolder with the dofiles (the search can be recursive): ")
+write_to = input("\nFile to write output to (you can include a path, but no extension): ")
 
 def fix_path(path):
     path = path.replace("\\", "/")

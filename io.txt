@@ -84,13 +84,13 @@
 * "${figures_dir}/shares_vs_actual_decomp"
 * "${figures_dir}/refi_index_mcdash_vs_mba"
 * Intermediates:
-* "results/ave_distandhazard_no_gse.dta"
-* "ave_distandhazard.dta"
 * "CLTV_national.dta"
-* "ave_distandhazard_never_delinquent.dta"
+* "results/ave_distandhazard_no_gse.dta"
 * "ave_distandhazard_dollarbins.dta"
 * "distandhazardinputs.dta"
 * "ave_distandhazard_allfirstliens.dta"
+* "ave_distandhazard_never_delinquent.dta"
+* "ave_distandhazard.dta"
 
 * copied_analysis_national.do
 * Inputs:
@@ -175,13 +175,13 @@
 * "${figures_dir}/shares_vs_actual_decomp"
 * "${figures_dir}/refi_index_mcdash_vs_mba"
 * Intermediates:
-* "results/ave_distandhazard_no_gse.dta"
-* "ave_distandhazard.dta"
 * "CLTV_national.dta"
-* "ave_distandhazard_never_delinquent.dta"
+* "results/ave_distandhazard_no_gse.dta"
 * "ave_distandhazard_dollarbins.dta"
 * "distandhazardinputs.dta"
 * "ave_distandhazard_allfirstliens.dta"
+* "ave_distandhazard_never_delinquent.dta"
+* "ave_distandhazard.dta"
 
 Project starting inputs, intermediates, and final outputs:
 
