@@ -145,6 +145,9 @@ for dofile in dofiles:
 # long as the file path is in quotes (single or double). I handle this by relaxing the
 # 'NOT SPACE' restriction and just having the match run until there is a comma or end of line.
 
+# Standardizing macros: in Stata, a macro is denoted by `'
+for dofile in dofiles:
+    dofile.lines = [re.sub(r"`[^`']+'",r"`macro'",l) for l in dofile.lines] 
 
 # Using is a complicated case that can be involved in inputs and outputs.
 
