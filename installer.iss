@@ -43,6 +43,41 @@ Source: "C:\Users\ijyli\repo\stata_dofile_io_detector\{#MyAppExeName}"; DestDir:
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
 Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
 
+[Code]
+function NeedsAddPathHKLM(Param: string): boolean;
+var
+OrigPath: string;
+begin
+if not RegQueryStringValue(HKEY_LOCAL_MACHINE,
+'SYSTEM\CurrentControlSet\Control\Session Manager\Environment',
+'Path', OrigPath)
+then begin
+Result := True;
+exit;
+end;
+// look for the path with leading and trailing semicolon
+// Pos() returns 0 if not found
+Result := Pos(';' + Param + ';', ';' + OrigPath + ';') = 0;
+end;
+function NeedsAddPathHKCU(Param: string): boolean;
+var
+OrigPath: string;
+begin
+if not RegQueryStringValue(HKEY_CURRENT_USER,
+'Environment',
+'Path', OrigPath)
+then begin
+Result := True;
+exit;
+end;
+// look for the path with leading and trailing semicolon
+// Pos() returns 0 if not found
+Result := Pos(';' + Param + ';', ';' + OrigPath + ';') = 0;
+end;
+
+[Registry]
+Root: "HKLM"; Subkey: "SYSTEM\CurrentControlSet\Control\Session Manager\Environment"; ValueType: expandsz; ValueName: "Path"; ValueData: "{olddata};{app}"; Check: NeedsAddPathHKLM(ExpandConstant('{app}'))
+Root: "HKCU"; Subkey: "Environment"; ValueType: expandsz; ValueName: "Path"; ValueData: "{olddata};{app}"; Check: NeedsAddPathHKCU(ExpandConstant('{app}'))
+
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
-
