@@ -7,7 +7,7 @@
 import sys
 
 print("\nFolder with the dofiles (the search can be recursive):", sys.argv[1])
-print("\nFile to write output to (no extension):", sys.argv[2])
+print("\nFile to write output to (you can include a path, but no extension):", sys.argv[2])
 
 # Set path to the common directory of dofiles
 path = sys.argv[1]
@@ -352,4 +352,4 @@ with open(write_to + '.txt', 'w') as f:
     for output in final_outputs:
         f.write("* " + output + "\n")
 
-print("\nA list of inputs and outputs has been written to ", write_to + '.txt.' + "\n")
+print("\nA list of inputs and outputs has been written to", write_to + '.txt.' + "\n")
