@@ -309,10 +309,10 @@ final_outputs = []
 project_intermediates = []
 for dofile in dofiles:
     for input in dofile.inputs:
-        if input not in all_inputs:
+        if filename_no_dta_ext(input) not in all_inputs:
             all_inputs.append(filename_no_dta_ext(input))
     for output in dofile.outputs:
-        if output not in all_outputs:
+        if filename_no_dta_ext(output) not in all_outputs:
             all_outputs.append(filename_no_dta_ext(output))
     for input in all_inputs:
         if input not in all_outputs:
