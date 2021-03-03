@@ -331,6 +331,17 @@ for output in all_outputs:
     # capture intermediates also (all intermediates are both outputs and inputs)
     elif output not in project_intermediates:
         project_intermediates.append(output)
+# Also classify intermediates within a single file as project intermediates
+for dofile in dofiles:
+    for intermediate in dofile.intermediates:
+        if intermediate not in project_intermediates:
+            project_intermediates.append(filename_no_dta_ext(intermediate))
+# Also clear up project intermediates from starting inputs and final outputs lists
+for project_intermediate in project_intermediates:
+    if project_intermediate in starting_inputs:
+        starting_inputs.remove(project_intermediate)
+    if project_intermediate in final_outputs:
+        final_outputs.remove(project_intermediate)
 
 # Write the overall list of inputs and outputs to a .txt file
 with open(write_to + '.txt', 'w') as f:
@@ -354,7 +365,7 @@ with open(write_to + '.txt', 'w') as f:
     f.write("\n" + "Project starting inputs:" + "\n")
     for input in starting_inputs:
         f.write("* " + input + "\n")
-    f.write("\n" + "Project intermediates (does not include files internal to a single script):" + "\n")
+    f.write("\n" + "Project intermediates:" + "\n")
     for intermediate in project_intermediates:
         f.write("* " + intermediate + "\n")
     f.write("\n" + "Project final outputs:" + "\n")
