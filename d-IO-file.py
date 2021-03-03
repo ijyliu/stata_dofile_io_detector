@@ -1,6 +1,6 @@
 # d-IO-file.py
 # Automated dofile I-O Mapper
-# Code by Isaac Liu with help from M Z on Stack Overflow
+# Code by Isaac Liu
 
 import os
 from os import path

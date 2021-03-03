@@ -9,3 +9,7 @@ On Windows, run the executable `d-IO-file_Installer.exe` by clicking on it or by
 On any platform/alternatively, if you have python installed, you can run `python d-IO-file.py` from a folder with the python script.
 
 Follow the prompts to input a target directory of dofiles (the search is recursive and this can contain subdirectories), and a file name for the desired location of output (without the extension).
+
+## Notes
+
+Made using Inno Setup 6 and the pyinstaller python package.
