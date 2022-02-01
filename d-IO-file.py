@@ -27,7 +27,7 @@ def fix_dofiles_target(dofiles_target):
     return(dofiles_target)
 
 # Detect the dofiles in the directory
-# Note this is not a recursive search
+# Pretty sure this is a recursive search
 # Source: https://stackoverflow.com/questions/3207219/how-do-i-list-all-files-of-a-directory
 allfiles = [(fix_dofiles_target(dp), f) for dp, dn, fn in os.walk(os.path.expanduser(dofiles_target)) for f in fn]
 
