@@ -164,6 +164,7 @@ for dofile in dofiles:
             merge_match = re.search(r'merge', line)
             is_match = re.search(r'insheet', line)
             id_match = re.search(r'import delimited', line)
+            ie_match = re.search(r'import excel', line)
             os_match = re.search(r'outsheet', line)
             et_match = re.search(r'esttab', line)
             jb_match = re.search(r'joinby', line)
@@ -171,7 +172,7 @@ for dofile in dofiles:
             if to_add[0] == "\"" or to_add[0] == "\'":
                 q_match = re.search(r'using +([^,\n]+)', line)
                 to_add = q_match.group(1)
-            if (use_match or append_match or merge_match or is_match or id_match or jb_match) and to_add not in dofile.inputs:
+            if (use_match or append_match or merge_match or is_match or id_match or ie_match or jb_match) and to_add not in dofile.inputs:
                 dofile.inputs.append(to_add)
             if (os_match or et_match) and to_add not in dofile.outputs:
                 dofile.outputs.append(to_add)
@@ -219,6 +220,20 @@ for dofile in dofiles:
             to_add = id_match.group(1)
             if to_add[0] == "\"" or to_add[0] == "\'":
                 q_match = re.search(r'import +delimited +([^,\n]+)', line)
+                to_add = q_match.group(1)
+            if to_add not in dofile.inputs:
+                dofile.inputs.append(to_add)
+
+# import excel
+# only match if not already caught by using
+for dofile in dofiles:
+    for line in dofile.lines:
+        ie_match = re.search(r'import +excel +([^\s,]+)', line)
+        using_match = re.search(r' using', line)
+        if ie_match and not using_match:
+            to_add = ie_match.group(1)
+            if to_add[0] == "\"" or to_add[0] == "\'":
+                q_match = re.search(r'import +excel +([^,\n]+)', line)
                 to_add = q_match.group(1)
             if to_add not in dofile.inputs:
                 dofile.inputs.append(to_add)

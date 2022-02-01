@@ -1850,3 +1850,5 @@ save thresholds_dollars.dta, replace
 use thresholds_timeseries.dta, replace
 merge 1:1 datem using thresholds_dollars, nogen
 save prepayment_effects_diff_thresholds_end, replace	
+
+import excel "try_to_find_me.xlsx", clear

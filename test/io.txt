@@ -34,6 +34,7 @@
 * "ratebins_dollars_national_month`macro'.dta"
 * "thresholds_dollars"
 * "thresholds_timeseries.dta"
+* "try_to_find_me.xlsx"
 * Outputs:
 * "mortgage_rate.csv"
 * "gap_dist_stats_national.csv"
@@ -84,12 +85,12 @@
 * "${figures_dir}/shares_vs_actual_decomp"
 * "${figures_dir}/refi_index_mcdash_vs_mba"
 * Intermediates:
-* "ave_distandhazard_never_delinquent.dta"
-* "ave_distandhazard.dta"
+* "distandhazardinputs.dta"
 * "results/ave_distandhazard_no_gse.dta"
 * "ave_distandhazard_allfirstliens.dta"
-* "distandhazardinputs.dta"
+* "ave_distandhazard.dta"
 * "CLTV_national.dta"
+* "ave_distandhazard_never_delinquent.dta"
 * "ave_distandhazard_dollarbins.dta"
 
 * copied_analysis_national.do
@@ -175,12 +176,12 @@
 * "${figures_dir}/shares_vs_actual_decomp"
 * "${figures_dir}/refi_index_mcdash_vs_mba"
 * Intermediates:
-* "ave_distandhazard_never_delinquent.dta"
-* "ave_distandhazard.dta"
+* "distandhazardinputs.dta"
 * "results/ave_distandhazard_no_gse.dta"
 * "ave_distandhazard_allfirstliens.dta"
-* "distandhazardinputs.dta"
+* "ave_distandhazard.dta"
 * "CLTV_national.dta"
+* "ave_distandhazard_never_delinquent.dta"
 * "ave_distandhazard_dollarbins.dta"
 
 Project starting inputs, intermediates, and final outputs:
@@ -206,15 +207,29 @@ Project starting inputs:
 * "ratebins_national_month`macro'_heterogeneous_reset_r"
 * "ratebins_national_month`macro'_only_gse"
 * "ratebins_national_month`macro'_no_gse"
-* "CLTV_national"
 * "ratebins_national_month`macro'_never_delinquent"
 * "ratebins_dollars_national_month`macro'"
 * "thresholds_timeseries"
+* "try_to_find_me.xlsx"
 
-Project intermediates (does not include files internal to a single script):
+Project intermediates:
 * "ave_distandhazard_heterogeneous_reset_r"
 * "ave_distandhazard_only_gse"
 * "thresholds_dollars"
+* "distandhazardinputs"
+* "ave_distandhazard_no_gse"
+* "ave_distandhazard_allfirstliens"
+* "ave_distandhazard"
+* "CLTV_national"
+* "ave_distandhazard_never_delinquent"
+* "ave_distandhazard_dollarbins"
+* "distandhazardinputs"
+* "ave_distandhazard_no_gse"
+* "ave_distandhazard_allfirstliens"
+* "ave_distandhazard"
+* "CLTV_national"
+* "ave_distandhazard_never_delinquent"
+* "ave_distandhazard_dollarbins"
 
 Project final outputs:
 * "mortgage_rate.csv"
