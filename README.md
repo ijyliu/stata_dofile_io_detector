@@ -1,6 +1,6 @@
 # d-IO-file, a Stata Dofile I/O Detector
 
-A primitive regEx based Python program which detects inputs and outputs to Stata do files and produces a .txt output.
+A simple regEx based Python program which detects inputs and outputs to Stata do files and produces a .txt output.
 
 ## Usage
 
